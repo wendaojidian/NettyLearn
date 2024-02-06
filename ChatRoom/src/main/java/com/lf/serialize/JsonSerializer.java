@@ -1,6 +1,5 @@
 package com.lf.serialize;
 
-import com.lf.packet.Packet;
 import com.alibaba.fastjson.JSON;
 
 /**

@@ -1,7 +1,5 @@
 package com.lf.serialize;
 
-import com.lf.packet.Packet;
-
 /**
  * @author liufan
  * @description: 序列化接口
