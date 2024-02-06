@@ -39,7 +39,7 @@ public class ByteBuffTest {
 
     }
 
-    private static void print(String action, ByteBuf buf) {
+    public static void print(String action, ByteBuf buf) {
         System.out.println("==============after " + action + "===============");
         System.out.println("capacity:" + buf.capacity());
         System.out.println("maxCapacity:" + buf.maxCapacity());
