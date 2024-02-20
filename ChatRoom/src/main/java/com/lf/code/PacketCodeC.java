@@ -2,10 +2,10 @@ package com.lf.code;
 
 import com.lf.command.Command;
 import com.lf.packet.LoginPacket;
+import com.lf.packet.LoginResponsePacket;
 import com.lf.packet.Packet;
 import com.lf.serialize.Serializer;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 
 /**
  * @author liufan
@@ -14,8 +14,10 @@ import io.netty.buffer.ByteBufAllocator;
  */
 public class PacketCodeC {
     private static final int MAGIC_NUMBER = 0X12345678;
-    public static ByteBuf encode(Packet packet) {
-        ByteBuf buf = ByteBufAllocator.DEFAULT.buffer();
+    public final static PacketCodeC PACKET_CODEC = new PacketCodeC();
+    private PacketCodeC() {}
+
+    public ByteBuf encode(ByteBuf buf, Packet packet) {
         byte[] bytes = Serializer.DEFAULT.serialize(packet);
         buf.writeInt(MAGIC_NUMBER);
         buf.writeByte(packet.getVersion());
@@ -26,7 +28,7 @@ public class PacketCodeC {
         return buf;
     }
 
-    public static <T extends Packet> T decode(ByteBuf buf) {
+    public <T extends Packet> T decode(ByteBuf buf) {
         buf.skipBytes(4);
         buf.skipBytes(1);
         byte algorithm = buf.readByte();
@@ -39,17 +41,20 @@ public class PacketCodeC {
         if (null != requestType && null != serializer) {
             return serializer.deserialize(requestType, bytes);
         }
+        System.out.println("Unsupported requestType");
         return null;
     }
 
-    private static <T extends Packet> Class<T> getRequestType(byte command) {
+    private <T extends Packet> Class<T> getRequestType(byte command) {
         if (command == Command.LOGIN_REQUEST) {
             return (Class<T>) LoginPacket.class;
+        } else if (command == Command.LOGIN_RESPONSE) {
+            return (Class<T>) LoginResponsePacket.class;
         }
         return null;
     }
 
-    private static Serializer getSerializerByAlgorithm(byte algorithm) {
+    private Serializer getSerializerByAlgorithm(byte algorithm) {
         if (algorithm == Serializer.DEFAULT.getAlgorithm()) {
             return Serializer.DEFAULT;
         }

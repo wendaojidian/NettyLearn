@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class LoginPacket extends Packet{
-    private Integer userId;
+    private String userId;
     private String userName;
     private String passWord;
     @Override

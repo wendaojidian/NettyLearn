@@ -1,11 +1,15 @@
 package com.lf.client;
 
 import com.lf.client.handler.HelloClientHandler;
+import com.lf.client.handler.LoginClientHandler;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.ChannelInboundHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -15,6 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @description: TODO
  * @since 2024/01/17
  */
+@Service
 public class NettyClient {
     private static final int MAX_RETRY = 5;
 
@@ -30,7 +35,7 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) {
-                        ch.pipeline().addLast(new HelloClientHandler());
+                        ch.pipeline().addLast(new LoginClientHandler());
                     }
                 });
         connect(bootstrap, "127.0.0.1", 1000, MAX_RETRY);
