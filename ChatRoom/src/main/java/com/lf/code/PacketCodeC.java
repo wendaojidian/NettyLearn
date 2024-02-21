@@ -11,7 +11,7 @@ import io.netty.buffer.ByteBuf;
  * @since 2024/02/06
  */
 public class PacketCodeC {
-    private static final int MAGIC_NUMBER = 0X12345678;
+    public static final int MAGIC_NUMBER = 0X12345678;
     public final static PacketCodeC PACKET_CODEC = new PacketCodeC();
     private PacketCodeC() {}
 

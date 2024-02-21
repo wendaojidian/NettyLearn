@@ -6,6 +6,7 @@ import com.lf.client.handler.MessageResponseHandler;
 import com.lf.code.PacketCodeC;
 import com.lf.code.PacketDecoder;
 import com.lf.code.PacketEncoder;
+import com.lf.code.Shield;
 import com.lf.packet.MessageRequestPacket;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -42,6 +43,7 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) {
+                        ch.pipeline().addLast(new Shield());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
