@@ -10,7 +10,17 @@
 > 相关联的适当的内存分配器，从而提高性能并避免不必要的内存分配和复制。
 
 - 在Netty中，handler不是单例模式，对于每个新的连接，Netty都会为其创建一个新的ChannelHandler实例，这避免了线程安全问题。
-- 
+- AttributeKey用法
+
+> 创建一个AttributeKey 
+> - AttributeKey<String> SESSION_ID = AttributeKey.valueOf("sessionId);（优先读取缓存，没有则新建一个）
+> - AttributeKey<Boolean> LOGIN = AttributeKey.newInstance("login");
+> 在ChannelHandlerContext上设置属性
+> - channelHandlerContext.attr(LOGIN).set(true);
+> 获取并使用属性
+> - boolean login = channelHandlerContext.attr(LOGIN).get();
+> 
+
 ## QA
 - Netty在收到数据之后，会回调channelRead()方法，这里第二个参数msg是一个Object，为什么Netty不直接把这个参数类型定义成ByteBuf？
 - 客户端登录成功或失败后，如何把成功或者失败的标识绑定在客户端的连接上？

@@ -1,9 +1,7 @@
 package com.lf.code;
 
 import com.lf.command.Command;
-import com.lf.packet.LoginPacket;
-import com.lf.packet.LoginResponsePacket;
-import com.lf.packet.Packet;
+import com.lf.packet.*;
 import com.lf.serialize.Serializer;
 import io.netty.buffer.ByteBuf;
 
@@ -50,6 +48,10 @@ public class PacketCodeC {
             return (Class<T>) LoginPacket.class;
         } else if (command == Command.LOGIN_RESPONSE) {
             return (Class<T>) LoginResponsePacket.class;
+        } else if (command == Command.MESSAGE_REQUEST) {
+            return (Class<T>) MessageRequestPacket.class;
+        } else if (command == Command.MESSAGE_RESPONSE) {
+            return (Class<T>) MessageReponsePacket.class;
         }
         return null;
     }
