@@ -1,10 +1,12 @@
 package com.lf.client;
 
 import com.lf.attribute.AttributeConstants;
-import com.lf.client.handler.LoginClientHandler;
+import com.lf.client.handler.LoginResponseHandler;
+import com.lf.client.handler.MessageResponseHandler;
 import com.lf.code.PacketCodeC;
+import com.lf.code.PacketDecoder;
+import com.lf.code.PacketEncoder;
 import com.lf.packet.MessageRequestPacket;
-import com.lf.util.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -40,7 +42,10 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) {
-                        ch.pipeline().addLast(new LoginClientHandler());
+                        ch.pipeline().addLast(new PacketDecoder());
+                        ch.pipeline().addLast(new LoginResponseHandler());
+                        ch.pipeline().addLast(new MessageResponseHandler());
+                        ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
         connect(bootstrap, "127.0.0.1", 1000, MAX_RETRY);
@@ -67,7 +72,7 @@ public class NettyClient {
         new Thread(() -> {
             while (!Thread.interrupted()) {
                 try {
-                    Thread.sleep(10L);
+                    Thread.sleep(100L);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }

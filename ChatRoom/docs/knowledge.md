@@ -21,6 +21,17 @@
 > - boolean login = channelHandlerContext.attr(LOGIN).get();
 > 
 
+- SimpleChannelInboundHandler，自动实现了类型判断和对象传递，通过泛型指定数据类型
+
+``` java
+public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRequestPacket> {
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, MessageRequestPacket messageRequestPacket) {
+    
+    }
+}
+```
+
 ## QA
 - Netty在收到数据之后，会回调channelRead()方法，这里第二个参数msg是一个Object，为什么Netty不直接把这个参数类型定义成ByteBuf？
 - 客户端登录成功或失败后，如何把成功或者失败的标识绑定在客户端的连接上？
