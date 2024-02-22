@@ -1,5 +1,6 @@
 package com.lf.server;
 
+import com.lf.client.handler.LifeCycleTestHandler;
 import com.lf.code.PacketDecoder;
 import com.lf.code.PacketEncoder;
 import com.lf.code.Shield;
@@ -10,6 +11,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,6 +31,7 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected  void initChannel(NioSocketChannel ch) {
+                        ch.pipeline().addLast(new LifeCycleTestHandler());
                         ch.pipeline().addLast(new Shield());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginRequestHandler());

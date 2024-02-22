@@ -1,6 +1,7 @@
 package com.lf.client;
 
 import com.lf.attribute.AttributeConstants;
+import com.lf.client.handler.LifeCycleTestHandler;
 import com.lf.client.handler.LoginResponseHandler;
 import com.lf.client.handler.MessageResponseHandler;
 import com.lf.code.PacketCodeC;
@@ -16,6 +17,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -24,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author liufan
- * @description: TODO
+ * @description: 客户端
  * @since 2024/01/17
  */
 @Service
@@ -43,6 +45,7 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) {
+                        ch.pipeline().addLast(new LifeCycleTestHandler());
                         ch.pipeline().addLast(new Shield());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());

@@ -6,7 +6,7 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 /**
  * @author liufan
- * @description: TODO
+ * @description: 魔数校验handler
  * @since 2024/02/21
  */
 public class Shield extends LengthFieldBasedFrameDecoder {
@@ -18,7 +18,9 @@ public class Shield extends LengthFieldBasedFrameDecoder {
 
     @Override
     protected Object decode(ChannelHandlerContext ctx, ByteBuf buf) throws Exception {
-        if(buf.readInt() != PacketCodeC.MAGIC_NUMBER) {
+        int magicNumber = buf.getInt(buf.readerIndex());
+//        System.out.println("[魔数校验]-" + magicNumber + "-" + PacketCodeC.MAGIC_NUMBER);
+        if(magicNumber != PacketCodeC.MAGIC_NUMBER) {
             ctx.channel().close();
             return null;
         }
