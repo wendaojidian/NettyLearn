@@ -9,6 +9,9 @@ import com.lf.code.PacketDecoder;
 import com.lf.code.PacketEncoder;
 import com.lf.code.Shield;
 import com.lf.packet.MessageRequestPacket;
+import com.lf.server.handler.AuthHandler;
+import com.lf.util.LockUtil;
+import com.lf.util.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -45,10 +48,11 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) {
-                        ch.pipeline().addLast(new LifeCycleTestHandler());
+//                        ch.pipeline().addLast(new LifeCycleTestHandler());
                         ch.pipeline().addLast(new Shield());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());
+                        ch.pipeline().addLast(new AuthHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
@@ -77,18 +81,17 @@ public class NettyClient {
         new Thread(() -> {
             while (!Thread.interrupted()) {
                 try {
-                    Thread.sleep(100L);
+                    LockUtil.COUNT_DOWN_LATCH.await();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                if (channel.attr(AttributeConstants.LOGIN).get()) {
+                if (LoginUtil.isLogin(channel)) {
                     System.out.println("请输入消息发送至服务端");
                     Scanner sc = new Scanner(System.in);
                     String msg = sc.nextLine();
                     MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
                     messageRequestPacket.setMsg(msg);
-                    ByteBuf byteBuf = PacketCodeC.PACKET_CODEC.encode(channel.alloc().buffer(), messageRequestPacket);
-                    channel.writeAndFlush(byteBuf);
+                    channel.writeAndFlush(messageRequestPacket);
                 }
             }
         }).start();

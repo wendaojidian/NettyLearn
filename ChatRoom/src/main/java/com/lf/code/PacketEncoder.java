@@ -1,8 +1,6 @@
 package com.lf.code;
 
-import com.alibaba.fastjson.JSONObject;
 import com.lf.packet.Packet;
-import com.lf.serialize.JsonSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;

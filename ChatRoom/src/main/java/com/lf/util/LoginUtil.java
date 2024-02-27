@@ -2,6 +2,7 @@ package com.lf.util;
 
 import com.lf.attribute.AttributeConstants;
 import io.netty.channel.Channel;
+import io.netty.util.Attribute;
 
 /**
  * @author liufan
@@ -14,6 +15,7 @@ public class LoginUtil {
     }
 
     public static boolean isLogin(Channel channel) {
-        return channel.attr(AttributeConstants.LOGIN).get();
+        Attribute<Boolean> login = channel.attr(AttributeConstants.LOGIN);
+        return null != login.get() && login.get();
     }
 }
