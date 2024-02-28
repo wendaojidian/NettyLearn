@@ -21,6 +21,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.util.internal.StringUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -52,7 +53,6 @@ public class NettyClient {
                         ch.pipeline().addLast(new Shield());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());
-                        ch.pipeline().addLast(new AuthHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
@@ -88,9 +88,15 @@ public class NettyClient {
                 if (LoginUtil.isLogin(channel)) {
                     System.out.println("请输入消息发送至服务端");
                     Scanner sc = new Scanner(System.in);
-                    String msg = sc.nextLine();
+                    String[] msg = sc.nextLine().split(" ");
                     MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
-                    messageRequestPacket.setMsg(msg);
+                    if (msg.length > 1) {
+                        messageRequestPacket.setToUserId(msg[0]);
+                        messageRequestPacket.setMsg(msg[1]);
+                    } else {
+                        messageRequestPacket.setMsg(msg[0]);
+                        messageRequestPacket.setToUserId("Server");
+                    }
                     channel.writeAndFlush(messageRequestPacket);
                 }
             }

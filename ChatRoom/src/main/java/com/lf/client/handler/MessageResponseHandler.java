@@ -12,6 +12,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class MessageResponseHandler extends SimpleChannelInboundHandler<MessageReponsePacket> {
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, MessageReponsePacket messageReponsePacket) {
-        System.out.println("收到服务端回复消息：" + messageReponsePacket.getMsg());
+        System.out.println(messageReponsePacket.getMsg());
     }
 }

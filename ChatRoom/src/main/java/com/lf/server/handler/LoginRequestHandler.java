@@ -1,7 +1,10 @@
 package com.lf.server.handler;
 
+import com.lf.entity.Session;
 import com.lf.packet.LoginPacket;
 import com.lf.packet.LoginResponsePacket;
+import com.lf.util.LoginUtil;
+import com.lf.util.SessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -18,7 +21,8 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginPacket
         System.out.println(new Date() + "服务端开始处理客户端登录请求......");
         LoginResponsePacket loginResponsePacket = new LoginResponsePacket();
         if (valid(loginPacket)) {
-            System.out.println(new Date() + "登录成功");
+            System.out.println(new Date() + "登录成功，用户id为：" + loginPacket.getUserId());
+            SessionUtil.bindSession(new Session(loginPacket.getUserId(), loginPacket.getUserName()), channelHandlerContext.channel());
             loginResponsePacket.setSuccess(true);
         } else {
             System.out.println(new Date() + "登录失败");
@@ -28,6 +32,6 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginPacket
     }
 
     private boolean valid(LoginPacket loginPacket) {
-        return "LiuFan".equals(loginPacket.getUserName());
+        return true;
     }
 }

@@ -12,6 +12,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.util.Date;
+import java.util.Scanner;
 import java.util.UUID;
 
 /**
@@ -22,8 +23,13 @@ import java.util.UUID;
 public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginResponsePacket> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
+        System.out.println("请输入用户名...");
+        Scanner sc = new Scanner(System.in);
+        String userName = sc.nextLine();
+        System.out.println("请输入密码...");
+        String password = sc.nextLine();
+        Packet packet = new LoginPacket(UUID.randomUUID().toString(), userName, password);
         System.out.println(new Date() + " 客户端开始登录");
-        Packet packet = new LoginPacket(UUID.randomUUID().toString(), "LiuFan", "123456");
         ctx.channel().writeAndFlush(packet);
     }
 
@@ -40,5 +46,11 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) {
+        System.out.println("客户端链接已关闭");
+
     }
 }

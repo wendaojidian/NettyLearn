@@ -1,5 +1,6 @@
 package com.lf.attribute;
 
+import com.lf.entity.Session;
 import io.netty.util.AttributeKey;
 
 /**
@@ -9,5 +10,7 @@ import io.netty.util.AttributeKey;
  */
 public interface AttributeConstants {
     AttributeKey<Boolean> LOGIN = AttributeKey.valueOf("login");
+
+    AttributeKey<Session> SESSION = AttributeKey.valueOf("session");
 
 }
