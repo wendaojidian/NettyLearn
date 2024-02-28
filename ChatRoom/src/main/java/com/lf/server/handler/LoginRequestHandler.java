@@ -23,6 +23,8 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginPacket
         if (valid(loginPacket)) {
             System.out.println(new Date() + "登录成功，用户id为：" + loginPacket.getUserId());
             SessionUtil.bindSession(new Session(loginPacket.getUserId(), loginPacket.getUserName()), channelHandlerContext.channel());
+            loginResponsePacket.setUserId(loginPacket.getUserId());
+            loginResponsePacket.setUserName(loginPacket.getUserName());
             loginResponsePacket.setSuccess(true);
         } else {
             System.out.println(new Date() + "登录失败");

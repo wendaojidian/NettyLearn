@@ -17,7 +17,6 @@ public class SessionUtil {
 
     public static void bindSession(Session session, Channel channel) {
         USER_INFO_MAP.put(session.getUserId(), channel);
-        LoginUtil.markLogin(channel);
         channel.attr(AttributeConstants.SESSION).set(session);
     }
 

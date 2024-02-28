@@ -52,6 +52,10 @@ public class PacketCodeC {
             return (Class<T>) MessageRequestPacket.class;
         } else if (command == Command.MESSAGE_RESPONSE) {
             return (Class<T>) MessageReponsePacket.class;
+        } else if (command == Command.CREATE_GROUP) {
+            return (Class<T>) CreateGroupRequestPacket.class;
+        } else if (command == Command.CREATE_GROUP_RESPONSE) {
+            return (Class<T>) CreateGroupResponsePacket.class;
         }
         return null;
     }

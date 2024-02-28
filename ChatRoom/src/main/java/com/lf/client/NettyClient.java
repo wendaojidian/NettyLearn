@@ -1,6 +1,7 @@
 package com.lf.client;
 
 import com.lf.attribute.AttributeConstants;
+import com.lf.client.handler.CreateGroupResponseHandler;
 import com.lf.client.handler.LifeCycleTestHandler;
 import com.lf.client.handler.LoginResponseHandler;
 import com.lf.client.handler.MessageResponseHandler;
@@ -8,8 +9,12 @@ import com.lf.code.PacketCodeC;
 import com.lf.code.PacketDecoder;
 import com.lf.code.PacketEncoder;
 import com.lf.code.Shield;
+import com.lf.command.ConsoleCommand;
+import com.lf.command.impl.ConsoleCommandManager;
+import com.lf.command.impl.LoginConsoleCommand;
 import com.lf.packet.MessageRequestPacket;
 import com.lf.server.handler.AuthHandler;
+import com.lf.util.CookieUtil;
 import com.lf.util.LockUtil;
 import com.lf.util.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
@@ -54,6 +59,7 @@ public class NettyClient {
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
+                        ch.pipeline().addLast(new CreateGroupResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
@@ -80,24 +86,10 @@ public class NettyClient {
     private static void startConsoleThread(Channel channel) {
         new Thread(() -> {
             while (!Thread.interrupted()) {
-                try {
-                    LockUtil.COUNT_DOWN_LATCH.await();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                if (LoginUtil.isLogin(channel)) {
-                    System.out.println("请输入消息发送至服务端");
-                    Scanner sc = new Scanner(System.in);
-                    String[] msg = sc.nextLine().split(" ");
-                    MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
-                    if (msg.length > 1) {
-                        messageRequestPacket.setToUserId(msg[0]);
-                        messageRequestPacket.setMsg(msg[1]);
-                    } else {
-                        messageRequestPacket.setMsg(msg[0]);
-                        messageRequestPacket.setToUserId("Server");
-                    }
-                    channel.writeAndFlush(messageRequestPacket);
+                Scanner scanner = new Scanner(System.in);
+                if (CookieUtil.isLogin(channel)) {
+                    ConsoleCommand consoleCommand = new ConsoleCommandManager();
+                    consoleCommand.exec(scanner, channel);
                 }
             }
         }).start();

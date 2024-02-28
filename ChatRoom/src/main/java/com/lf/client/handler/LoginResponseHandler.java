@@ -1,13 +1,11 @@
 package com.lf.client.handler;
 
-import com.lf.attribute.AttributeConstants;
-import com.lf.code.PacketCodeC;
+import com.lf.entity.Cookie;
 import com.lf.packet.LoginPacket;
 import com.lf.packet.LoginResponsePacket;
 import com.lf.packet.Packet;
+import com.lf.util.CookieUtil;
 import com.lf.util.LockUtil;
-import com.lf.util.LoginUtil;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -38,11 +36,11 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
         try {
             if (loginResponsePacket.getSuccess()) {
                 System.out.println(new Date() + " 登录成功");
-                LoginUtil.markLogin(channelHandlerContext.channel());
+                CookieUtil.markLogin(channelHandlerContext.channel(),
+                        new Cookie(loginResponsePacket.getUserId(), loginResponsePacket.getUserName()));
             } else {
                 System.out.println(new Date() + " 登录失败");
             }
-            LockUtil.COUNT_DOWN_LATCH.countDown();
         } catch (Exception e) {
             e.printStackTrace();
         }
