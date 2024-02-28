@@ -20,7 +20,7 @@ public class CreateGroupConsoleCommand implements ConsoleCommand {
         System.out.println(new Date() + "请输入群聊成员，用英文逗号分隔");
         String[] userList = scanner.nextLine().split(",");
         CreateGroupRequestPacket createGroupPacket = new CreateGroupRequestPacket(
-                channel.attr(AttributeConstants.COOKIE).get().getUserName(), Arrays.asList(userList));
+                channel.attr(AttributeConstants.COOKIE).get().getUserId(), Arrays.asList(userList));
         channel.writeAndFlush(createGroupPacket);
     }
 }

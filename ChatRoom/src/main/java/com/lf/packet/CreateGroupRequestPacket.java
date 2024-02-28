@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class CreateGroupRequestPacket extends Packet{
-    String creator;
+    String creatorId;
     List<String> userIdList;
     @Override
     public Byte getCommand() {
