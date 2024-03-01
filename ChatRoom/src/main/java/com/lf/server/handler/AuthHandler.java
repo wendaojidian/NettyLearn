@@ -16,6 +16,7 @@ import java.util.Date;
 public class AuthHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        System.out.println(new Date() + "服务端开始校验用户登录态...");
         if (SessionUtil.isLogin(ctx.channel())) {
             System.out.println(new Date() + ": 登录校验通过");
             ctx.pipeline().remove(this);

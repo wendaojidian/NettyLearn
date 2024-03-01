@@ -22,6 +22,7 @@ public class Shield extends LengthFieldBasedFrameDecoder {
 //        System.out.println("[魔数校验]-" + magicNumber + "-" + PacketCodeC.MAGIC_NUMBER);
         if(magicNumber != PacketCodeC.MAGIC_NUMBER) {
             ctx.channel().close();
+            System.out.println("魔数校验失败");
             return null;
         }
         return super.decode(ctx, buf);

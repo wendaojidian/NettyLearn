@@ -27,7 +27,6 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
         System.out.println("请输入密码...");
         String password = sc.nextLine();
         Packet packet = new LoginPacket(UUID.randomUUID().toString(), userName, password);
-        System.out.println(new Date() + " 客户端开始登录");
         ctx.channel().writeAndFlush(packet);
     }
 
@@ -35,7 +34,7 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, LoginResponsePacket loginResponsePacket) {
         try {
             if (loginResponsePacket.getSuccess()) {
-                System.out.println(new Date() + " 登录成功");
+                System.out.println(new Date() + " 登录成功，用户id为：" + loginResponsePacket.getUserId());
                 CookieUtil.markLogin(channelHandlerContext.channel(),
                         new Cookie(loginResponsePacket.getUserId(), loginResponsePacket.getUserName()));
             } else {

@@ -17,6 +17,10 @@ import java.util.Scanner;
 public class ConsoleCommandManager implements ConsoleCommand {
     private static final Map<String, ConsoleCommand> COMMAND_MAP = ImmutableMap.<String, ConsoleCommand>builder()
             .put("CreateGroup", new CreateGroupConsoleCommand())
+            .put("ListGroupMembers", new ListGroupMembersConsoleCommand())
+            .put("JoinGroup", new JoinGroupConsoleCommand())
+            .put("QuitGroup", new QuitGroupConsoleCommand())
+            .put("SendToGroup", new SendMessageToGroupConsoleCommand())
             .build();
 
     @Override

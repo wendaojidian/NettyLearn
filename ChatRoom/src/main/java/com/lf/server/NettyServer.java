@@ -4,10 +4,7 @@ import com.lf.client.handler.LifeCycleTestHandler;
 import com.lf.code.PacketDecoder;
 import com.lf.code.PacketEncoder;
 import com.lf.code.Shield;
-import com.lf.server.handler.AuthHandler;
-import com.lf.server.handler.CreateGroupRequestHandler;
-import com.lf.server.handler.LoginRequestHandler;
-import com.lf.server.handler.MessageRequestHandler;
+import com.lf.server.handler.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -40,6 +37,10 @@ public class NettyServer {
                         ch.pipeline().addLast(new AuthHandler());
                         ch.pipeline().addLast(new MessageRequestHandler());
                         ch.pipeline().addLast(new CreateGroupRequestHandler());
+                        ch.pipeline().addLast(new ListGroupMembersRequestHandler());
+                        ch.pipeline().addLast(new JoinGroupRequestHandler());
+                        ch.pipeline().addLast(new QuitGroupRequestHandler());
+                        ch.pipeline().addLast(new SendToGroupRequestHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });

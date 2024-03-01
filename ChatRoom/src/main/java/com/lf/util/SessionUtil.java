@@ -3,6 +3,7 @@ package com.lf.util;
 import com.lf.attribute.AttributeConstants;
 import com.lf.entity.Session;
 import io.netty.channel.Channel;
+import io.netty.channel.group.ChannelGroup;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SessionUtil {
     private static final Map<String, Channel> USER_INFO_MAP = new ConcurrentHashMap<>();
 
+    private static final Map<String, ChannelGroup> CHANNEL_GROUP_MAP = new ConcurrentHashMap<>();
     public static void bindSession(Session session, Channel channel) {
         USER_INFO_MAP.put(session.getUserId(), channel);
         channel.attr(AttributeConstants.SESSION).set(session);
@@ -31,5 +33,9 @@ public class SessionUtil {
 
     public static boolean isLogin(Channel channel) {
         return null != channel.attr(AttributeConstants.SESSION).get();
+    }
+
+    public static String getUserName(Channel channel) {
+        return channel.attr(AttributeConstants.SESSION).get().getUserName();
     }
 }

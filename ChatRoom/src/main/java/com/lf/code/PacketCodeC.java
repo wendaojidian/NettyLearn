@@ -56,6 +56,24 @@ public class PacketCodeC {
             return (Class<T>) CreateGroupRequestPacket.class;
         } else if (command == Command.CREATE_GROUP_RESPONSE) {
             return (Class<T>) CreateGroupResponsePacket.class;
+        } else if (command == Command.LIST_GROUP_MEMBERS_REQUEST) {
+            return (Class<T>) ListGroupMembersRequestPacket.class;
+        } else if (command == Command.LIST_GROUP_MEMBERS_RESPONSE) {
+            return (Class<T>) ListGroupMembersResponsePacket.class;
+        } else if (command == Command.JOIN_GROUP_REQUEST) {
+            return (Class<T>) JoinGroupRequestPacket.class;
+        } else if (command == Command.JOIN_GROUP_RESPONSE) {
+            return (Class<T>) JoinGroupResponsePacket.class;
+        } else if (command == Command.QUIT_GROUP_REQUEST) {
+            return (Class<T>) QuitGroupRequestPacket.class;
+        } else if (command == Command.QUIT_GROUP_RESPONSE) {
+            return (Class<T>) QuitGroupResponsePacket.class;
+        } else if (command == Command.SEND_MESSAGE_TO_GROUP_REQUEST) {
+            return (Class<T>) SendMessageToGroupRequestPacket.class;
+        } else if (command == Command.SEND_MESSAGE_TO_GROUP_RESPONSE) {
+            return (Class<T>) SendMessageToGroupResponsePacket.class;
+        } else {
+            System.out.println("不支持的命令类型");
         }
         return null;
     }

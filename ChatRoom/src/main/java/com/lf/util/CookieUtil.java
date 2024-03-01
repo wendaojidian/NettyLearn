@@ -21,4 +21,8 @@ public class CookieUtil {
     public static void markLogout(Channel channel) {
         channel.attr(AttributeConstants.COOKIE).set(null);
     }
+
+    public static String getId(Channel channel) {
+        return channel.attr(AttributeConstants.COOKIE).get().getUserId();
+    }
 }

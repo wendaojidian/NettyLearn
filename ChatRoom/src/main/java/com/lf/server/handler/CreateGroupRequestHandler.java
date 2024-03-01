@@ -1,6 +1,7 @@
 package com.lf.server.handler;
 
 import com.lf.attribute.AttributeConstants;
+import com.lf.util.GroupUtil;
 import com.lf.packet.CreateGroupRequestPacket;
 import com.lf.packet.CreateGroupResponsePacket;
 import com.lf.util.SessionUtil;
@@ -9,7 +10,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,10 +36,12 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
             }
         }
         String groupId = UUID.randomUUID().toString();
+        GroupUtil.bindChannelGroup(groupId, channelGroup);
+        GroupUtil.createGroup(groupId, userIdList);
+        // 保存groupId->members的映射
         CreateGroupResponsePacket createGroupResponsePacket =
                 new CreateGroupResponsePacket(new Date() + createGroupPacket.getCreatorId() +
                         "创建群聊，群聊id：" + groupId + "\n群聊成员包括：" + userList);
         channelGroup.writeAndFlush(createGroupResponsePacket);
-
     }
 }

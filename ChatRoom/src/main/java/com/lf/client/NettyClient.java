@@ -1,10 +1,7 @@
 package com.lf.client;
 
 import com.lf.attribute.AttributeConstants;
-import com.lf.client.handler.CreateGroupResponseHandler;
-import com.lf.client.handler.LifeCycleTestHandler;
-import com.lf.client.handler.LoginResponseHandler;
-import com.lf.client.handler.MessageResponseHandler;
+import com.lf.client.handler.*;
 import com.lf.code.PacketCodeC;
 import com.lf.code.PacketDecoder;
 import com.lf.code.PacketEncoder;
@@ -60,6 +57,10 @@ public class NettyClient {
                         ch.pipeline().addLast(new LoginResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
                         ch.pipeline().addLast(new CreateGroupResponseHandler());
+                        ch.pipeline().addLast(new ListGroupMembersResponseHandler());
+                        ch.pipeline().addLast(new JoinGroupResponseHandler());
+                        ch.pipeline().addLast(new QuitGroupResponseHandler());
+                        ch.pipeline().addLast(new SendToGroupResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
@@ -70,7 +71,6 @@ public class NettyClient {
     private static void connect(Bootstrap bootstrap, String host, int port, int retry) {
         bootstrap.connect(host, port).addListener(future -> {
             if (future.isSuccess()) {
-                System.out.println(new Date() + "连接成功");
                 startConsoleThread(((ChannelFuture)future).channel());
             } else if (retry == 0){
                 System.out.println("重试次数已用完，连接失败");
