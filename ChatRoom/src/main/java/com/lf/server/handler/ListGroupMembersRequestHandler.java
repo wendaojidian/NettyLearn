@@ -1,12 +1,16 @@
 package com.lf.server.handler;
 
-import com.lf.attribute.AttributeConstants;
-import com.lf.util.GroupUtil;
-import com.lf.packet.ListGroupMembersRequestPacket;
-import com.lf.packet.ListGroupMembersResponsePacket;
-import com.lf.util.SessionUtil;
+import com.lf.common.attribute.AttributeConstants;
+import com.lf.common.command.Command;
+import com.lf.common.handler.service.HandlerService;
+import com.lf.common.util.GroupUtil;
+import com.lf.common.packet.ListGroupMembersRequestPacket;
+import com.lf.common.packet.ListGroupMembersResponsePacket;
+import com.lf.common.util.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +21,9 @@ import java.util.Map;
  * @description: TODO
  * @since 2024/02/29
  */
-public class ListGroupMembersRequestHandler extends SimpleChannelInboundHandler<ListGroupMembersRequestPacket> {
+@Service
+@ChannelHandler.Sharable
+public class ListGroupMembersRequestHandler extends SimpleChannelInboundHandler<ListGroupMembersRequestPacket> implements HandlerService {
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ListGroupMembersRequestPacket listGroupMembersRequestPacket) throws Exception {
         System.out.println("服务端开始处理查询群聊成员的请求...");
@@ -37,5 +43,10 @@ public class ListGroupMembersRequestHandler extends SimpleChannelInboundHandler<
             listGroupMembersResponsePacket.setIdToNameMap(idToNameMap);
         }
         SessionUtil.getChannel(listGroupMembersRequestPacket.getUserId()).writeAndFlush(listGroupMembersResponsePacket);
+    }
+
+    @Override
+    public Byte getCommand() {
+        return Command.LIST_GROUP_MEMBERS_REQUEST;
     }
 }

@@ -32,6 +32,10 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
 }
 ```
 
+- ctx.writeAndFlash() VS ctx.channel().writeAndFlash()
+> ctx.writeAndFlash()方法从当前节点开始，向前找到第一个OutBound类型的Handler，把对象往前传播，如果对象确认不需要经过其他OutBound类型的Handler处理，就是用该方法。
+> ctx.channel().writeAndFlash()方法从Pipeline链的最后一个Outbound类型的Handler开始，把对象往前传播
+
 ## QA
 - Netty在收到数据之后，会回调channelRead()方法，这里第二个参数msg是一个Object，为什么Netty不直接把这个参数类型定义成ByteBuf？
 - 客户端登录成功或失败后，如何把成功或者失败的标识绑定在客户端的连接上？

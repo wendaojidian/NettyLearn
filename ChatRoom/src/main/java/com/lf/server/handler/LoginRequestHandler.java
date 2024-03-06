@@ -1,12 +1,13 @@
 package com.lf.server.handler;
 
-import com.lf.entity.Session;
-import com.lf.packet.LoginPacket;
-import com.lf.packet.LoginResponsePacket;
-import com.lf.util.LoginUtil;
-import com.lf.util.SessionUtil;
+import com.lf.common.entity.Session;
+import com.lf.common.packet.LoginPacket;
+import com.lf.common.packet.LoginResponsePacket;
+import com.lf.common.util.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
@@ -15,6 +16,8 @@ import java.util.Date;
  * @description: 处理客户端请求、发送回复
  * @since 2024/02/21
  */
+@ChannelHandler.Sharable
+@Service
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginPacket> {
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, LoginPacket loginPacket) {

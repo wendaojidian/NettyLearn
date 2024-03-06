@@ -2,9 +2,9 @@ package com.lf.encode;
 
 import com.alibaba.fastjson.JSON;
 import com.lf.buf.ByteBuffTest;
-import com.lf.code.PacketCodeC;
-import com.lf.packet.LoginPacket;
-import com.lf.packet.Packet;
+import com.lf.common.code.PacketCodeC;
+import com.lf.common.packet.LoginPacket;
+import com.lf.common.packet.Packet;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import org.junit.Test;

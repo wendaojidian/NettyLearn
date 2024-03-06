@@ -1,15 +1,19 @@
 package com.lf.server.handler;
 
-import com.lf.attribute.AttributeConstants;
-import com.lf.util.GroupUtil;
-import com.lf.packet.CreateGroupRequestPacket;
-import com.lf.packet.CreateGroupResponsePacket;
-import com.lf.util.SessionUtil;
+import com.lf.common.attribute.AttributeConstants;
+import com.lf.common.command.Command;
+import com.lf.common.handler.service.HandlerService;
+import com.lf.common.util.GroupUtil;
+import com.lf.common.packet.CreateGroupRequestPacket;
+import com.lf.common.packet.CreateGroupResponsePacket;
+import com.lf.common.util.SessionUtil;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,7 +25,9 @@ import java.util.UUID;
  * @description: 服务端接收客户端创建群聊请求处理handler
  * @since 2024/02/28
  */
-public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<CreateGroupRequestPacket> {
+@Service
+@ChannelHandler.Sharable
+public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<CreateGroupRequestPacket> implements HandlerService {
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, CreateGroupRequestPacket createGroupPacket) {
         ChannelGroup channelGroup = new DefaultChannelGroup(channelHandlerContext.executor());
@@ -43,5 +49,10 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
                 new CreateGroupResponsePacket(new Date() + createGroupPacket.getCreatorId() +
                         "创建群聊，群聊id：" + groupId + "\n群聊成员包括：" + userList);
         channelGroup.writeAndFlush(createGroupResponsePacket);
+    }
+
+    @Override
+    public Byte getCommand() {
+        return Command.CREATE_GROUP;
     }
 }

@@ -1,10 +1,11 @@
 package com.lf.server.handler;
 
-import com.lf.attribute.AttributeConstants;
-import com.lf.util.LoginUtil;
-import com.lf.util.SessionUtil;
+import com.lf.common.util.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
@@ -13,10 +14,13 @@ import java.util.Date;
  * @description: 服务端登录校验handler
  * @since 2024/02/22
  */
+@ChannelHandler.Sharable
+@Service
+@Slf4j
 public class AuthHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println(new Date() + "服务端开始校验用户登录态...");
+        log.info(new Date() + "服务端开始校验用户登录态...");
         if (SessionUtil.isLogin(ctx.channel())) {
             System.out.println(new Date() + ": 登录校验通过");
             ctx.pipeline().remove(this);
