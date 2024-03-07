@@ -71,6 +71,10 @@ public class PacketCodeC {
             return (Class<T>) SendMessageToGroupRequestPacket.class;
         } else if (command == Command.SEND_MESSAGE_TO_GROUP_RESPONSE) {
             return (Class<T>) SendMessageToGroupResponsePacket.class;
+        } else if (command == Command.HEART_BEAT_REQUEST) {
+            return (Class<T>) HeartBeatRequestPacket.class;
+        } else if (command == Command.HEART_BEAT_RESPONSE) {
+            return (Class<T>) HeartBeatResponsePacket.class;
         } else {
             System.out.println("不支持的命令类型");
         }

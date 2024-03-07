@@ -1,6 +1,7 @@
 package com.lf.server.init;
 
 import com.lf.common.code.Shield;
+import com.lf.server.handler.IMIdleStateHandler;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelInboundHandler;
 import io.netty.channel.ChannelInitializer;
@@ -26,6 +27,7 @@ public class ServerInitializer extends ChannelInitializer<NioSocketChannel> {
 
     @Override
     protected void initChannel(NioSocketChannel ch) {
+        ch.pipeline().addLast(new IMIdleStateHandler());
         ch.pipeline().addLast(new Shield());
         ch.pipeline().addLast(packetCodeHandler);
         ch.pipeline().addLast(loginRequestHandler);

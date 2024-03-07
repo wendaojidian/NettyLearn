@@ -23,11 +23,14 @@ public class ClientInitializer extends ChannelInitializer<NioSocketChannel> {
     private ChannelInboundHandler loginResponseHandler;
     @Autowired
     private ChannelInboundHandler imHandler;
+    @Autowired
+    private ChannelInboundHandler heartBeatTimerHandler;
     @Override
     protected void initChannel(NioSocketChannel ch) {
         ch.pipeline().addLast(new Shield());
         ch.pipeline().addLast(packetCodeHandler);
         ch.pipeline().addLast(loginResponseHandler);
+        ch.pipeline().addLast(heartBeatTimerHandler);
         ch.pipeline().addLast(imHandler);
     }
 }

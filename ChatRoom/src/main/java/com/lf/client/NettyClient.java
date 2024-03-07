@@ -33,7 +33,7 @@ public class NettyClient {
     private ChannelInitializer clientInitializer;
 
     @PostConstruct
-    private void start() {
+    public void start() {
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
         Bootstrap bootstrap = new Bootstrap();
@@ -50,7 +50,7 @@ public class NettyClient {
         SpringApplication.run(NettyClient.class, args);
     }
 
-    private void connect(Bootstrap bootstrap, String host, int port, int retry) {
+    public void connect(Bootstrap bootstrap, String host, int port, int retry) {
         bootstrap.connect(host, port).addListener(future -> {
             if (future.isSuccess()) {
                 startConsoleThread(((ChannelFuture)future).channel());
